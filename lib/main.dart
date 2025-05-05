@@ -4,8 +4,6 @@ void main() {
   runApp(const MyApp());
 }
 
- // Closing brace for _MyHomePageState class
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(), // No more title passed here
+      home: const MyHomePage(),
     );
   }
 }
@@ -40,27 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   final Map<String, Map<String, String>> suggestions = {
-  'Long Week, Need Easy': {
-    'movie': 'The Nice Guys',
-    'meal': 'Frozen pizza and garlic knots',
-  },
-  'Date Night': {
-    'movie': 'La La Land',
-    'meal': 'Steak with wine and chocolate lava cake',
-  },
-  'Comfort Food & Cozy': {
-    'movie': 'Julie & Julia',
-    'meal': 'Mac & cheese with hot tea',
-  },
-  'Feeling Adventurous': {
-    'movie': 'Everything Everywhere All At Once',
-    'meal': 'Korean BBQ bowls or sushi',
-  },
-  'Just Background Noise': {
-    'movie': 'The Office (random episode)',
-    'meal': 'Leftovers and chips',
-  },
-};
+    'Long Week, Need Easy': {
+      'movie': 'The Nice Guys',
+      'meal': 'Frozen pizza and garlic knots',
+    },
+    'Date Night': {
+      'movie': 'La La Land',
+      'meal': 'Steak with wine and chocolate lava cake',
+    },
+    'Comfort Food & Cozy': {
+      'movie': 'Julie & Julia',
+      'meal': 'Mac & cheese with hot tea',
+    },
+    'Feeling Adventurous': {
+      'movie': 'Everything Everywhere All At Once',
+      'meal': 'Korean BBQ bowls or sushi',
+    },
+    'Just Background Noise': {
+      'movie': 'The Office (random episode)',
+      'meal': 'Leftovers and chips',
+    },
+  };
 
   void pickNight() {
     if (selectedMood != null) {
@@ -69,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Tonight's Vibe"),
+          title: const Text("Tonight's Vibe"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -90,6 +88,34 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Widget _buildSuggestionCard({required String movie, required String meal}) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Movie Recommendation',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(movie, style: const TextStyle(fontSize: 14)),
+            const Divider(),
+            const Text(
+              'Meal Idea',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(meal, style: const TextStyle(fontSize: 14)),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 16),
-            ...moods.map((mood) => RadioListTile(
+            ...moods.map((mood) => RadioListTile<String>(
                   title: Text(mood),
                   value: mood,
                   groupValue: selectedMood,
@@ -128,31 +154,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-Widget _buildSuggestionCard({required String movie, required String meal}) {
-  return Card(
-    elevation: 4,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Movie Recommendation',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 8),
-          Text(movie, style: TextStyle(fontSize: 14)),
-          const Divider(),
-          Text(
-            'Meal Idea',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 8),
-          Text(meal, style: TextStyle(fontSize: 14)),
-        ],
-      ),
-    ),
-  );
 }

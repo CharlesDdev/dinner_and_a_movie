@@ -28,4 +28,4 @@ ios/Runner.xcworkspace/
 
 # Firebase
 google-services.json
-ios/Runner/GoogleService-Info.plist
+ios/Runner/GoogleService-Info.plist 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'suggestions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,73 +32,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedMood;
 
-  final List<Map<String, dynamic>> moods = [
-  {
-    'label': 'Long Week, Need Easy',
-    'icon': Icons.weekend,
-  },
-  {
-    'label': 'Date Night',
-    'icon': Icons.favorite,
-  },
-  {
-    'label': 'Comfort Food & Cozy',
-    'icon': Icons.local_cafe,
-  },
-  {
-    'label': 'Feeling Adventurous',
-    'icon': Icons.explore,
-  },
-  {
-    'label': 'Just Background Noise',
-    'icon': Icons.music_note,
-  },
-];
-
-  final Map<String, Map<String, dynamic>> suggestions = {
-  'Long Week, Need Easy': {
-    'movie': 'The Nice Guys',
-    'meal': 'Frozen pizza and garlic knots',
-    'icon': Icons.weekend,
-  },
-  'Date Night': {
-    'movie': 'La La Land',
-    'meal': 'Steak with wine and chocolate lava cake',
-    'icon': Icons.favorite,
-  },
-  'Comfort Food & Cozy': {
-    'movie': 'Julie & Julia',
-    'meal': 'Mac & cheese with hot tea',
-    'icon': Icons.local_cafe,
-  },
-  'Feeling Adventurous': {
-    'movie': 'Everything Everywhere All At Once',
-    'meal': 'Korean BBQ bowls or sushi',
-    'icon': Icons.travel_explore,
-  },
-  'Just Background Noise': {
-    'movie': 'The Office (random episode)',
-    'meal': 'Leftovers and chips',
-    'icon': Icons.tv,
-  },
-};
-
   void pickNight() {
-  if (selectedMood != null) {
-    final suggestion = suggestions[selectedMood]!;
+    if (selectedMood != null) {
+      final suggestion = suggestions[selectedMood]!;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResultScreen(
-          movie: suggestion['movie']!,
-          meal: suggestion['meal']!,
-          icon: suggestion['icon'], // include the icon!
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            movie: suggestion['movie']!,
+            meal: suggestion['meal']!,
+            icon: suggestion['icon'],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,21 +66,21 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16),
             ...moods.map((mood) => RadioListTile<String>(
-  title: Row(
-    children: [
-      Icon(mood['icon']),
-      const SizedBox(width: 10),
-      Text(mood['label']),
-    ],
-  ),
-  value: mood['label'],
-  groupValue: selectedMood,
-  onChanged: (value) {
-    setState(() {
-      selectedMood = value;
-    });
-  },
-)),
+                  title: Row(
+                    children: [
+                      Icon(mood['icon']),
+                      const SizedBox(width: 10),
+                      Text(mood['label']),
+                    ],
+                  ),
+                  value: mood['label'],
+                  groupValue: selectedMood,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedMood = value;
+                    });
+                  },
+                )),
             const SizedBox(height: 24),
             Center(
               child: ElevatedButton(
@@ -182,13 +133,13 @@ class ResultScreen extends StatelessWidget {
                 Text('Meal', style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 8),
                 Text(meal, style: Theme.of(context).textTheme.bodyLarge),
-                 const SizedBox(height: 20),
-    TextButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      child: const Text("Start Over"),
-    ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Start Over"),
+                ),
               ],
             ),
           ),
@@ -197,4 +148,3 @@ class ResultScreen extends StatelessWidget {
     );
   }
 }
-// This is a simple Flutter app that suggests a movie and meal based on the user's mood.

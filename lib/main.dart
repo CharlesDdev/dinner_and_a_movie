@@ -31,53 +31,73 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedMood;
 
-  final List<String> moods = [
-    'Long Week, Need Easy',
-    'Date Night',
-    'Comfort Food & Cozy',
-    'Feeling Adventurous',
-    'Just Background Noise',
-  ];
+  final List<Map<String, dynamic>> moods = [
+  {
+    'label': 'Long Week, Need Easy',
+    'icon': Icons.weekend,
+  },
+  {
+    'label': 'Date Night',
+    'icon': Icons.favorite,
+  },
+  {
+    'label': 'Comfort Food & Cozy',
+    'icon': Icons.local_cafe,
+  },
+  {
+    'label': 'Feeling Adventurous',
+    'icon': Icons.explore,
+  },
+  {
+    'label': 'Just Background Noise',
+    'icon': Icons.music_note,
+  },
+];
 
-  final Map<String, Map<String, String>> suggestions = {
-    'Long Week, Need Easy': {
-      'movie': 'The Nice Guys',
-      'meal': 'Frozen pizza and garlic knots',
-    },
-    'Date Night': {
-      'movie': 'La La Land',
-      'meal': 'Steak with wine and chocolate lava cake',
-    },
-    'Comfort Food & Cozy': {
-      'movie': 'Julie & Julia',
-      'meal': 'Mac & cheese with hot tea',
-    },
-    'Feeling Adventurous': {
-      'movie': 'Everything Everywhere All At Once',
-      'meal': 'Korean BBQ bowls or sushi',
-    },
-    'Just Background Noise': {
-      'movie': 'The Office (random episode)',
-      'meal': 'Leftovers and chips',
-    },
-  };
+  final Map<String, Map<String, dynamic>> suggestions = {
+  'Long Week, Need Easy': {
+    'movie': 'The Nice Guys',
+    'meal': 'Frozen pizza and garlic knots',
+    'icon': Icons.weekend,
+  },
+  'Date Night': {
+    'movie': 'La La Land',
+    'meal': 'Steak with wine and chocolate lava cake',
+    'icon': Icons.favorite,
+  },
+  'Comfort Food & Cozy': {
+    'movie': 'Julie & Julia',
+    'meal': 'Mac & cheese with hot tea',
+    'icon': Icons.local_cafe,
+  },
+  'Feeling Adventurous': {
+    'movie': 'Everything Everywhere All At Once',
+    'meal': 'Korean BBQ bowls or sushi',
+    'icon': Icons.travel_explore,
+  },
+  'Just Background Noise': {
+    'movie': 'The Office (random episode)',
+    'meal': 'Leftovers and chips',
+    'icon': Icons.tv,
+  },
+};
 
   void pickNight() {
-    if (selectedMood != null) {
-      final suggestion = suggestions[selectedMood]!;
+  if (selectedMood != null) {
+    final suggestion = suggestions[selectedMood]!;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResultScreen(
-            movie: suggestion['movie']!,
-            meal: suggestion['meal']!,
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultScreen(
+          movie: suggestion['movie']!,
+          meal: suggestion['meal']!,
+          icon: suggestion['icon'], // include the icon!
         ),
-      );
-    }
+      ),
+    );
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,15 +115,21 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16),
             ...moods.map((mood) => RadioListTile<String>(
-                  title: Text(mood),
-                  value: mood,
-                  groupValue: selectedMood,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedMood = value;
-                    });
-                  },
-                )),
+  title: Row(
+    children: [
+      Icon(mood['icon']),
+      const SizedBox(width: 10),
+      Text(mood['label']),
+    ],
+  ),
+  value: mood['label'],
+  groupValue: selectedMood,
+  onChanged: (value) {
+    setState(() {
+      selectedMood = value;
+    });
+  },
+)),
             const SizedBox(height: 24),
             Center(
               child: ElevatedButton(
@@ -122,8 +148,14 @@ class _MyHomePageState extends State<MyHomePage> {
 class ResultScreen extends StatelessWidget {
   final String movie;
   final String meal;
+  final IconData icon;
 
-  const ResultScreen({super.key, required this.movie, required this.meal});
+  const ResultScreen({
+    super.key,
+    required this.movie,
+    required this.meal,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -131,42 +163,37 @@ class ResultScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Tonight’s Plan"),
       ),
-      body: Column(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Center(
-      child: Card(
-        margin: const EdgeInsets.all(24),
-        elevation: 6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Movie', style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 8),
-              Text(movie, style: Theme.of(context).textTheme.bodyLarge),
-              const Divider(height: 32),
-              Text('Meal', style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 8),
-              Text(meal, style: Theme.of(context).textTheme.bodyLarge),
-            ],
-          ),
-        ),
-      ),
-    ),
-    const SizedBox(height: 20),
+      body: Center(
+        child: Card(
+          margin: const EdgeInsets.all(24),
+          elevation: 6,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 64, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(height: 16),
+                Text('Movie', style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 8),
+                Text(movie, style: Theme.of(context).textTheme.bodyLarge),
+                const Divider(height: 32),
+                Text('Meal', style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 8),
+                Text(meal, style: Theme.of(context).textTheme.bodyLarge),
+                 const SizedBox(height: 20),
     TextButton(
       onPressed: () {
         Navigator.pop(context);
       },
       child: const Text("Start Over"),
     ),
-  ],
-),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

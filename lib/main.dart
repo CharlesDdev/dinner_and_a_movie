@@ -4,6 +4,7 @@ void main() {
   runApp(const MyApp());
 }
 
+// Root widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Home page with state
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -64,56 +66,16 @@ class _MyHomePageState extends State<MyHomePage> {
     if (selectedMood != null) {
       final suggestion = suggestions[selectedMood]!;
 
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Tonight's Vibe"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildSuggestionCard(
-                movie: suggestion['movie']!,
-                meal: suggestion['meal']!,
-              ),
-            ],
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            movie: suggestion['movie']!,
+            meal: suggestion['meal']!,
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Nice!'),
-            )
-          ],
         ),
       );
     }
-  }
-
-  Widget _buildSuggestionCard({required String movie, required String meal}) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Movie Recommendation',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            Text(movie, style: const TextStyle(fontSize: 14)),
-            const Divider(),
-            const Text(
-              'Meal Idea',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            Text(meal, style: const TextStyle(fontSize: 14)),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -155,3 +117,57 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// Result screen
+class ResultScreen extends StatelessWidget {
+  final String movie;
+  final String meal;
+
+  const ResultScreen({super.key, required this.movie, required this.meal});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Tonight’s Plan"),
+      ),
+      body: Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Center(
+      child: Card(
+        margin: const EdgeInsets.all(24),
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Movie', style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 8),
+              Text(movie, style: Theme.of(context).textTheme.bodyLarge),
+              const Divider(height: 32),
+              Text('Meal', style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 8),
+              Text(meal, style: Theme.of(context).textTheme.bodyLarge),
+            ],
+          ),
+        ),
+      ),
+    ),
+    const SizedBox(height: 20),
+    TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: const Text("Start Over"),
+    ),
+  ],
+),
+    );
+  }
+}
+// This is a simple Flutter app that suggests a movie and meal based on the user's mood.

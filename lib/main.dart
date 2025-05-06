@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'suggestions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'suggestions.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-// Root widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Home page with state
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -80,6 +78,27 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (selectedMood != null) ...[
+              Card(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: ListTile(
+                  leading: Icon(
+                    suggestions[selectedMood]!['icon'],
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  title: const Text('Last Pick'),
+                  subtitle: Text(
+                    '${suggestions[selectedMood]!['movie']} + ${suggestions[selectedMood]!['meal']}',
+                  ),
+                  trailing: TextButton(
+                    onPressed: pickNight,
+                    child: const Text("Replay"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
             Text(
               'What kind of night is it?',
               style: Theme.of(context).textTheme.headlineSmall,
@@ -115,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// Result screen
 class ResultScreen extends StatelessWidget {
   final String movie;
   final String meal;

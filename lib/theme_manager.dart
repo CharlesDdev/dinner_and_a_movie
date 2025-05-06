@@ -1,22 +1,19 @@
-// lib/theme_manager.dart
-
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
-  bool _isDarkMode = false;
-  MaterialColor _accentColor = Colors.deepPurple;
+  ThemeMode _themeMode = ThemeMode.system;
+  Color _accentColor = Colors.deepPurple;
 
-  bool get isDarkMode => _isDarkMode;
-  MaterialColor get accentColor => _accentColor;
-
-  ThemeMode get currentTheme => _isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode get themeMode => _themeMode;
+  Color get accentColor => _accentColor;
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
 
   void toggleTheme(bool isDark) {
-    _isDarkMode = isDark;
+    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 
-  void setAccentColor(MaterialColor color) {
+  void setAccentColor(Color color) {
     _accentColor = color;
     notifyListeners();
   }

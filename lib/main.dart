@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'suggestions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,8 +33,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedMood;
 
-  void pickNight() {
+  @override
+  void initState() {
+    super.initState();
+    loadLastMood();
+  }
+
+  void loadLastMood() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedMood = prefs.getString('lastMood');
+    if (savedMood != null) {
+      setState(() {
+        selectedMood = savedMood;
+      });
+    }
+  }
+
+  void pickNight() async {
     if (selectedMood != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('lastMood', selectedMood!);
+
       final suggestion = suggestions[selectedMood]!;
 
       Navigator.push(

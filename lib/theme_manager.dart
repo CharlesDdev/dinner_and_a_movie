@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light;
   Color _accentColor = Colors.deepPurple;
 
   ThemeMode get themeMode => _themeMode;

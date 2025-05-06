@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'suggestions.dart';
+import 'package:provider/provider.dart';
+import 'theme_manager.dart'; // already created
 
 void main() {
   runApp(const MyApp());
@@ -80,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             if (selectedMood != null) ...[
               Card(
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 child: ListTile(
                   leading: Icon(

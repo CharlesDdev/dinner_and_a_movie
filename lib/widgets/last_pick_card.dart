@@ -1,27 +1,49 @@
 import 'package:flutter/material.dart';
 
 class LastPickCard extends StatelessWidget {
-  final Map<String, dynamic> lastPick;
+  final String movie;
+  final String meal;
+  final IconData icon;
 
-  const LastPickCard({required this.lastPick, super.key});
+  const LastPickCard({
+    required this.movie,
+    required this.meal,
+    required this.icon,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accentColor = theme.colorScheme.primary;
+
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Last Pick',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Icon(icon, size: 64, color: accentColor),
+            const SizedBox(height: 24),
+            Text('Movie', style: theme.textTheme.titleLarge),
             const SizedBox(height: 8),
-            Text('Movie: ${lastPick['movie']}'),
-            Text('Meal: ${lastPick['meal']}'),
+            Text(
+              movie,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Divider(color: theme.dividerColor),
+            const SizedBox(height: 24),
+            Text('Meal', style: theme.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              meal,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'suggestions.dart';
 import 'theme/theme_manager.dart';
-import 'widgets/last_pick_card.dart';
 import 'package:dinner_and_a_movie/widgets/result_screen.dart';
 
 void main() {

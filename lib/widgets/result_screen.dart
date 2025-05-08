@@ -20,61 +20,22 @@ class ResultScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Tonight’s Plan")),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildResultCard(context),
-                      const SizedBox(height: 32),
-                      _buildButtons(context),
-                    ],
-                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
+            child: Column(
+              children: [
+                LastPickCard(
+                  icon: icon,
+                  movie: movie,
+                  meal: meal,
                 ),
-              ),
+                const SizedBox(height: 32),
+                _buildButtons(context),
+              ],
             ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildResultCard(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 64, color: theme.colorScheme.primary),
-            const SizedBox(height: 24),
-            Text('Movie', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text(
-              movie,
-              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Divider(color: theme.dividerColor),
-            const SizedBox(height: 24),
-            Text('Meal', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 8),
-            Text(
-              meal,
-              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -131,6 +92,65 @@ class ResultScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
             width: 2,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LastPickCard extends StatelessWidget {
+  final IconData icon;
+  final String movie;
+  final String meal;
+
+  const LastPickCard({
+    super.key,
+    required this.icon,
+    required this.movie,
+    required this.meal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accentColor = theme.colorScheme.primary;
+
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 64, color: accentColor),
+            const SizedBox(height: 24),
+            Text('Movie', style: theme.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              movie,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Divider(color: theme.dividerColor),
+            const SizedBox(height: 24),
+            Text('Meal', style: theme.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              meal,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              icon: const Icon(Icons.replay),
+              label: const Text("Replay Tonight"),
+              onPressed: () {
+                // Add functionality for replaying tonight's plan
+              },
+            ),
+          ],
         ),
       ),
     );

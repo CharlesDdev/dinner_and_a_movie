@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../theme/theme_manager.dart'; // Adjust to match your actual path
+import '../theme/theme_manager.dart'; // Adjust if needed
 
 class ResultScreen extends StatelessWidget {
   final String movie;
@@ -20,87 +20,98 @@ class ResultScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Tonight’s Plan")),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Card Display
-              Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(icon, size: 64, color: theme.colorScheme.primary),
-                      const SizedBox(height: 24),
-                      Text('Movie', style: theme.textTheme.titleLarge),
-                      const SizedBox(height: 8),
-                      Text(
-                        movie,
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 24),
-                      Divider(color: theme.dividerColor),
-                      const SizedBox(height: 24),
-                      Text('Meal', style: theme.textTheme.titleLarge),
-                      const SizedBox(height: 8),
-                      Text(
-                        meal,
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
+                      _buildResultCard(context),
+                      const SizedBox(height: 32),
+                      _buildButtons(context),
                     ],
                   ),
                 ),
               ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-              const SizedBox(height: 32),
-
-              // Start Over Button
-              FilledButton.icon(
-                icon: const Icon(Icons.restart_alt),
-                label: const Text("Start Over"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              // Theme Toggle Button
-              FilledButton.icon(
-                icon: const Icon(Icons.brightness_6),
-                label: Text(
-                  theme.brightness == Brightness.dark ? "Light Mode" : "Dark Mode",
-                ),
-                onPressed: () {
-                  Provider.of<ThemeManager>(context, listen: false).toggleTheme();
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Accent Color Swatches
-              Text("Accent Color", style: theme.textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildAccentDot(context, Colors.deepPurple),
-                  _buildAccentDot(context, Colors.teal),
-                  _buildAccentDot(context, Colors.pink),
-                  _buildAccentDot(context, Colors.orange),
-                ],
-              ),
-            ],
-          ),
+  Widget _buildResultCard(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 64, color: theme.colorScheme.primary),
+            const SizedBox(height: 24),
+            Text('Movie', style: theme.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              movie,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Divider(color: theme.dividerColor),
+            const SizedBox(height: 24),
+            Text('Meal', style: theme.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(
+              meal,
+              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildButtons(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeManager = Provider.of<ThemeManager>(context, listen: false);
+
+    return Column(
+      children: [
+        FilledButton.icon(
+          icon: const Icon(Icons.restart_alt),
+          label: const Text("Start Over"),
+          onPressed: () => Navigator.pop(context),
+        ),
+        const SizedBox(height: 24),
+        FilledButton.icon(
+          icon: const Icon(Icons.brightness_6),
+          label: Text(
+            theme.brightness == Brightness.dark ? "Light Mode" : "Dark Mode",
+          ),
+          onPressed: () => themeManager.toggleTheme(),
+        ),
+        const SizedBox(height: 16),
+        Text("Accent Color", style: theme.textTheme.titleMedium),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildAccentDot(context, Colors.deepPurple),
+            _buildAccentDot(context, Colors.teal),
+            _buildAccentDot(context, Colors.pink),
+            _buildAccentDot(context, Colors.orange),
+          ],
+        ),
+      ],
     );
   }
 

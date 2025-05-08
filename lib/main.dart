@@ -1,7 +1,10 @@
+// main.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/last_pick_card.dart';
 import 'suggestions.dart';
 import 'theme/theme_manager.dart';
 import 'package:dinner_and_a_movie/widgets/result_screen.dart';
@@ -13,6 +16,33 @@ void main() {
       child: const MyApp(),
     ),
   );
+}
+
+class LastPickCard extends StatelessWidget {
+  final Map<String, dynamic> lastPick;
+
+  const LastPickCard({required this.lastPick, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Last Pick',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text('Movie: ${lastPick['movie']}'),
+            Text('Meal: ${lastPick['meal']}'),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

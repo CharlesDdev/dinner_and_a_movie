@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'suggestions.dart';
-import 'theme_manager.dart';
+import 'theme/theme_manager.dart';
 import 'widgets/last_pick_card.dart';
-import 'widgets/result_screen.dart';
+import 'package:dinner_and_a_movie/widgets/result_screen.dart';
 
 void main() {
   runApp(
@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Dinner & a Movie',
-      themeMode: themeManager.themeMode,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
@@ -51,6 +50,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
+      themeMode: themeManager.themeMode,
       home: const MyHomePage(),
     );
   }

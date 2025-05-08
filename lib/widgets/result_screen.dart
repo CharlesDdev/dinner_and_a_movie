@@ -117,7 +117,7 @@ class ResultScreen extends StatelessWidget {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
             width: 2,
           ),
         ),
